@@ -18,9 +18,9 @@ async function main() {
   // We get the contract to deploy
   const Faucet = await hre.ethers.getContractFactory("Faucet");
   const ERC20 = await hre.ethers.getContractFactory("ERC20");
- // const faucet = await Faucet.attach("0x6dBf98C35ad5f51E538270C6F48acB5A80b2E4Ff");
-
-
+  //const faucet = await Faucet.attach("0xCb8cf565A8efD3369C09873E5801A9AD8853EadE");
+  const faucet = await Faucet.deploy("0xDAa2031432cD9e07316A66d5c95B5A4434Ffc781");
+  const developer = faucet.address;
 
 
 //lp token addresses
@@ -34,70 +34,42 @@ async function main() {
     const token8 =  await ERC20.attach("0x93A88114FD9e5bd25AB4b9017E7891DcC4B06d0c");
     const token9 =  await ERC20.attach("0xe7Fd4AbfcaF6323e77c5072d1c12947fE9A21b25");
 
-    //checking the totalSupplyOfLPT
-    const bal1= await token1.totalSupply();
-    const bal2=   await token2.totalSupply();
-    const bal3 = await token3.totalSupply();
-    const bal4 =  await token4.totalSupply();
-    const bal5 =await token5.totalSupply();
-    const bal6 =  await token6.totalSupply();
-    const bal7 =await token7.totalSupply();
-    const bal8 = await token8.totalSupply();
-    const bal9 = await token9.totalSupply();
 
-console.log(bal1);
-console.log(bal2);
-console.log(bal3);
-console.log(bal4);
-console.log(bal5);
-console.log(bal6);
-console.log(bal7);
-console.log(bal8);
-console.log(bal9);
+    const tDAI =   await ERC20.deploy('Test DAI ','DAI', '18' , '40000000000000000000000000000000', faucet.address);
+    const tUSDT =   await ERC20.deploy('Test USDT ','USDC', '18' , '40000000000000000000000000000000', developer);
+    const tUSDC =   await ERC20.deploy('Test USDC ','USDC', '18' , '40000000000000000000000000000000', developer);
+    const tBNB =   await ERC20.deploy('Test BNB ','USDC', '18' , '400000000000000000000000000000000', developer);
+    const tWETH =   await ERC20.deploy('Test WETH ','USDC', '18' , '4000000000000000000000000000000', developer);
 
-const faucet = await Faucet.deploy("0xDAa2031432cD9e07316A66d5c95B5A4434Ffc781");
 
-   const developer = faucet.address;
-    const tDAI =   await ERC20.deploy('Test DAI ','DAI', '18' , '100000000000000000000000000000', faucet.address);
-   const tUSDT =   await ERC20.deploy('Test USDT ','USDC', '18' , '40000000000000000000000000000000', developer);
-   const tUSDC =   await ERC20.deploy('Test USDC ','USDC', '18' , '40000000000000000000000000000000', developer);
-   const tBNB =   await ERC20.deploy('Test BNB ','USDC', '18' , '400000000000000000000000000000000', developer);
-   const tWETH =   await ERC20.deploy('Test WETH ','USDC', '18' , '4000000000000000000000000000000', developer);
 
     await faucet.addToken(tDAI.address,'10000000000000000');
     await faucet.addToken(tUSDT.address,'10000000000000000');
     await faucet.addToken(tUSDC.address,'10000000000000000');
     await faucet.addToken(tBNB.address,'10000000000000000');
     await faucet.addToken(tWETH.address,'10000000000000000');
-console.log(bal1/100);
-    await faucet.addToken(token1.address,bal1/10000);
-    await faucet.addToken(token2.address,bal2/10000);
-    await faucet.addToken(token3.address,bal3/10000);
-    await faucet.addToken(token4.address,bal4/10000);
-    await faucet.addToken(token5.address,bal5/10000);
-    await faucet.addToken(token6.address,bal6/10000);
-    await faucet.addToken(token7.address,bal7/10000);
-    await faucet.addToken(token8.address,bal8/10000);
-    await faucet.addToken(token9.address,bal9/10000);
-    console.log(await faucet.totalTokens());
-    await faucet.removeAllWithAmt('0x476646bb9593991cea12E53438862F9b9d437BB2','10000');
-    // await faucet.addToken('0x138136E466A586ccfDb3B5a8510332C3D61c6d0b','100000');
-     //await faucet.addToken('0xd810Ca81306Ec87c73ad935F7334b2C2F6ce0171','1000000000');
-    // await faucet.addToken('0x138136E466A586ccfDb3B5a8510332C3D61c6d0b','100000');
-    // await faucet.addToken('0x138136E466A586ccfDb3B5a8510332C3D61c6d0b','100000');
-    // await faucet.addToken('0x138136E466A586ccfDb3B5a8510332C3D61c6d0b','100000');
-  //   console.log(await faucet.totalTokens());
-  //
-  console.log ("✓ Contract Verification")
-  // console.log ({
-  //   Faucet: `npx hardhat verify --network ${network} ${faucet.address}`,
-  //           // TDai:`tDai ${tDAI.address}`,
-  //           // TUSDT:`tDai ${tUSDT.address}`,
-  //           // TUSDC:`tDai ${tUSDC.address}`,
-  //           // TWETH:`tDai ${tWETH.address}`,
-  //           // TBNB:`tDai ${tBNB.address}`,
-  //           // LPT:`tLPT ${tokenDeploy1.address}`
-  // })
+    await faucet.addToken(token1.address,'10000000000000000');
+    await faucet.addToken(token2.address,'10000000000000000');
+    await faucet.addToken(token3.address,'10000000000000000');
+    await faucet.addToken(token4.address,'10000000000000000');
+    await faucet.addToken(token5.address,'10000000000000000');
+    await faucet.addToken(token6.address,'10000000000000000');
+    await faucet.addToken(token7.address,'10000000000000000');
+    await faucet.addToken(token8.address,'10000000000000000');
+    await faucet.addToken(token9.address,'10000000000000000');
+//    await faucet.removeAll('0x476646bb9593991cea12E53438862F9b9d437BB2');
+    console.log(await faucet.tokens(1));
+    console.log(await faucet.tokens(6));
+   // console.log(await faucet.totalTokens());
+    console.log ("✓ Contract Verification")
+    console.log ({
+    Faucet: `npx hardhat verify --network ${faucet.address}`,
+            TDai:`tDai ${tDAI.address}`,
+            TUSDT:`tUSDT ${tUSDT.address}`,
+            TUSDC:`tUSDC ${tUSDC.address}`,
+            TWETH:`tWETH ${tWETH.address}`,
+            TBNB:`tBNB ${tBNB.address}`,
+  })
     }
 
 // We recommend this pattern to be able to use async/await everywhere
