@@ -18,7 +18,7 @@ async function main() {
   // We get the contract to deploy
   const Faucet = await hre.ethers.getContractFactory("Faucet");
   const ERC20 = await hre.ethers.getContractFactory("ERC20");
-  //const faucet = await Faucet.attach("0xCb8cf565A8efD3369C09873E5801A9AD8853EadE");
+//  const faucet = await Faucet.attach("0xae412Fb71c24BD7B79D59870D9EA5a5E9750ee1e");
   const faucet = await Faucet.deploy("0xDAa2031432cD9e07316A66d5c95B5A4434Ffc781");
   const developer = faucet.address;
 
@@ -37,9 +37,9 @@ async function main() {
 
     const tDAI =   await ERC20.deploy('Test DAI ','DAI', '18' , '40000000000000000000000000000000', faucet.address);
     const tUSDT =   await ERC20.deploy('Test USDT ','USDC', '18' , '40000000000000000000000000000000', developer);
-    const tUSDC =   await ERC20.deploy('Test USDC ','USDC', '18' , '40000000000000000000000000000000', developer);
-    const tBNB =   await ERC20.deploy('Test BNB ','USDC', '18' , '400000000000000000000000000000000', developer);
-    const tWETH =   await ERC20.deploy('Test WETH ','USDC', '18' , '4000000000000000000000000000000', developer);
+    const tUSDC =   await ERC20.deploy('Test USDC ','USDT', '18' , '40000000000000000000000000000000', developer);
+    const tBNB =   await ERC20.deploy('Test BNB ','BNB', '18' , '400000000000000000000000000000000', developer);
+    const tWETH =   await ERC20.deploy('Test WETH ','WETH', '18' , '4000000000000000000000000000000', developer);
 
 
 
@@ -48,6 +48,7 @@ async function main() {
     await faucet.addToken(tUSDC.address,'10000000000000000');
     await faucet.addToken(tBNB.address,'10000000000000000');
     await faucet.addToken(tWETH.address,'10000000000000000');
+
     await faucet.addToken(token1.address,'10000000000000000');
     await faucet.addToken(token2.address,'10000000000000000');
     await faucet.addToken(token3.address,'10000000000000000');
@@ -57,10 +58,14 @@ async function main() {
     await faucet.addToken(token7.address,'10000000000000000');
     await faucet.addToken(token8.address,'10000000000000000');
     await faucet.addToken(token9.address,'10000000000000000');
-//    await faucet.removeAll('0x476646bb9593991cea12E53438862F9b9d437BB2');
-    console.log(await faucet.tokens(1));
-    console.log(await faucet.tokens(6));
-   // console.log(await faucet.totalTokens());
+  
+
+    //    await faucet.removeAll('0x476646bb9593991cea12E53438862F9b9d437BB2');
+//
+    //faucet token balance 
+    for (i =0;i<14;i++){
+        console.log(await faucet.tokens(i));
+    }
     console.log ("✓ Contract Verification")
     console.log ({
     Faucet: `npx hardhat verify --network ${faucet.address}`,
