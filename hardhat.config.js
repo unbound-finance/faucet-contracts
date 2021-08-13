@@ -19,18 +19,21 @@ task("accounts", "Prints the list of accounts", async () => {
  * @type import('hardhat/config').HardhatUserConfig
  */
 module.exports = {
-  solidity: "0.8.0",
-
-  networks: {
-    kovan: {
-      url: `https://kovan.infura.io/v3/${process.env.INFURA_API_KEY}`,
-      accounts: [process.env.DEPLOYER_PRIVATE_KEY],
-      gas: 10000000,
+  solidity: {
+    version: "0.8.0",
+    settings: {
+      optimizer: {
+        runs: 200,
+        enabled: true
+      }
+     }
     },
-    mainnet: {
-      url: `https://mainnet.infura.io/v3/${process.env.INFURA_API_KEY}`,
+  networks: {
+    testnetMatic: {
+      url: `https://matic-mumbai.chainstacklabs.com`,
       accounts: [process.env.DEPLOYER_PRIVATE_KEY],
-      gas: 10000000,
+      chainId: 80001,
+      gasPrice: 20000000000,
     }
   },
 
