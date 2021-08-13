@@ -58,29 +58,36 @@ contract Faucet {
                 IERC20(token.token).balanceOf(address(this))
             );
         }
+        totalTokens = 0;
     }
 
     function removeAllWithAmt(address _to, uint256 _amt) external onlyDev {
         for (uint256 i = 0; i < totalTokens; i++) {
             Token storage token = tokens[i];
-            IERC20(token.token).transfer(
-                _to,
-                _amt
-            );
+            IERC20(token.token).transfer(_to, _amt);
         }
     }
 
-    function addToken(address _token, uint256 _amount) external onlyDev {
+    function addToken(
+        address _token,
+        uint256 _amount,
+        uint256 _totalAmount
+    ) external onlyDev {
         Token storage token = tokens[totalTokens];
         token.token = _token;
         token.amount = _amount;
         totalTokens = totalTokens.add(1);
+        IERC20(_token).transferFrom(msg.sender, address(this), _totalAmount);
     }
 
-    function removeToken() external onlyDev {
+    function removeToken(address _to) external onlyDev {
         Token storage token = tokens[totalTokens];
         token.token = address(0);
         token.amount = 0;
         totalTokens = totalTokens.sub(1);
+        IERC20(token.token).transfer(
+            _to,
+            IERC20(token.token).balanceOf(address(this))
+        );
     }
 }
