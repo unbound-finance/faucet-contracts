@@ -13,7 +13,7 @@ contract Faucet {
         uint256 amount;
     }
 
-    mapping(uint256 => Token) tokens;
+    mapping(uint256 => Token) public tokens;
 
     uint256 public totalTokens;
     uint256 public timelimit = 86400000;
@@ -57,8 +57,8 @@ contract Faucet {
                 _to,
                 IERC20(token.token).balanceOf(address(this))
             );
+            totalTokens = totalTokens.sub(1);
         }
-        totalTokens = 0;
     }
 
     function removeAllWithAmt(address _to, uint256 _amt) external onlyDev {
@@ -77,6 +77,17 @@ contract Faucet {
         token.token = _token;
         token.amount = _amount;
         totalTokens = totalTokens.add(1);
+        IERC20(_token).transferFrom(msg.sender, address(this), _totalAmount);
+    }
+
+    function updateAmount(
+        address _token,
+        uint256 _amount,
+        uint256 _totalAmount
+    ) external {
+        Token storage token = tokens[totalTokens];
+        token.token = _token;
+        token.amount = _amount;
         IERC20(_token).transferFrom(msg.sender, address(this), _totalAmount);
     }
 
